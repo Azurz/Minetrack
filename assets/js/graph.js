@@ -362,11 +362,16 @@ export class GraphDisplayManager {
   }
 
   handleServerButtonClick = (event) => {
-    const serverId = parseInt(event.target.getAttribute('minetrack-server-id'))
+    const target = event.currentTarget
+    const serverId = parseInt(target.getAttribute('minetrack-server-id'))
     const serverRegistration = this._app.serverRegistry.getServerRegistration(serverId)
 
-    if (serverRegistration.isVisible !== event.target.checked) {
-      serverRegistration.isVisible = event.target.checked
+    if (!serverRegistration) {
+      return
+    }
+
+    if (serverRegistration.isVisible !== target.checked) {
+      serverRegistration.isVisible = target.checked
 
       // Any manual changes automatically disables "Only Favorites" mode
       // Otherwise the auto management might overwrite their manual changes
@@ -377,7 +382,12 @@ export class GraphDisplayManager {
   }
 
   handleShowButtonClick = (event) => {
-    const showType = event.target.getAttribute('minetrack-show-type')
+    const target = event.currentTarget
+    const showType = target.getAttribute('minetrack-show-type')
+
+    if (!showType) {
+      return
+    }
 
     // If set to "Only Favorites", set internal state so that
     // visible graphData is automatically updating when a ServerRegistration's #isVisible changes
